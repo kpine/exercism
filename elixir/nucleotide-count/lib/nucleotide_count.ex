@@ -17,13 +17,6 @@ defmodule NucleotideCount do
     Enum.count(strand, &(nucleotide == &1))
   end
 
-  defp histogram([nuc | strand], accumulator) do
-    new_accumulator = Map.update!(accumulator, nuc, &(&1 + 1))
-    histogram(strand, new_accumulator)
-  end
-
-  defp histogram([], accumulator), do: accumulator
-
   @doc """
   Returns a summary of counts by nucleotide.
 
@@ -34,6 +27,7 @@ defmodule NucleotideCount do
   """
   @spec histogram(charlist()) :: map()
   def histogram(strand) do
-    histogram(strand, Map.new(@nucleotides, &({&1, 0})))
+    default = Map.new(@nucleotides, &({&1, 0}))
+    Map.merge(default, Enum.frequencies(strand))
   end
 end
