@@ -1,13 +1,6 @@
 defmodule NucleotideCount do
   @nucleotides [?A, ?C, ?G, ?T]
 
-  defp count([nuc | strand], nucleotide, accumulator) do
-    new_accumulator = if nuc == nucleotide, do: accumulator + 1, else: accumulator
-    count(strand, nucleotide, new_accumulator)
-  end
-
-  defp count([], _nucleotide, accumulator), do: accumulator
-
   @doc """
   Counts individual nucleotides in a DNA strand.
 
@@ -21,7 +14,7 @@ defmodule NucleotideCount do
   """
   @spec count(charlist(), char()) :: non_neg_integer()
   def count(strand, nucleotide) do
-    count(strand, nucleotide, 0)
+    Enum.count(strand, &(nucleotide == &1))
   end
 
   @doc """
