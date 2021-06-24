@@ -20,17 +20,16 @@ defmodule SecretHandshake do
   """
   @spec commands(code :: integer) :: list(String.t())
   def commands(code) do
-    handshake_code =
-      case code &&& @reverse_bit do
-        0 -> @handshake_code
-        _ -> Enum.reverse(@handshake_code)
-      end
-
-    Enum.reduce(handshake_code, [], fn {bit, action}, actions ->
+    actions = Enum.reduce(@handshake_code, [], fn {bit, action}, actions ->
       case code &&& bit do
         0 -> actions
         _ -> [ action | actions ]
       end
     end)
+
+    case code &&& @reverse_bit do
+      0 -> actions
+      _ -> Enum.reverse(actions)
+    end
   end
 end
